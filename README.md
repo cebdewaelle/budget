@@ -1,2 +1,2 @@
 # budget
-Faites facilement votre budget
+Créez facilement votre budget.
