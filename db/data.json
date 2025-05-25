@@ -1,0 +1,133 @@
+{
+    "users": [
+        {
+            "email": "jean.dupont@example.com",
+            "firstname": "Jean",
+            "lastname": "Dupont",
+            "password": "testAnice"
+        },
+        {
+            "email": "marie.dupont@example.com",
+            "firstname": "Marie",
+            "lastname": "Dupont",
+            "password": "testMarie"
+        }
+    ],
+    "accounts": [
+        {
+            "name": "Compte courant",
+            "balance": 2235.54,
+            "date_balance": "2025-05-25",
+            "type": "Checking",
+            "in_budget": 1,
+            "user_id": 1
+        },
+        {
+            "name": "Livret A",
+            "balance": 722.41,
+            "date_balance": "2025-05-25",
+            "type": "Savings",
+            "in_budget": 1,
+            "user_id": 1
+        },
+        {
+            "name": "Compte courant",
+            "balance": 354.54,
+            "date_balance": "2025-05-25",
+            "type": "Checking",
+            "in_budget": 1,
+            "user_id": 2
+        }
+    ],
+    "top_categories": [
+        {
+            "name": "Factures"
+        },
+        {
+            "name": "Salaire"
+        },
+        {
+            "name": "Dépenses quotidiennes"
+        }
+    ],
+    "sub_categories": [
+        {
+            "name": "Mobile",
+            "top_category_id": 1
+        },
+        {
+            "name": "Internet",
+            "top_category_id": 1
+        },
+        {
+            "name": "Nourriture",
+            "top_category_id": 2
+        }
+    ],
+    "payees": [
+        {
+            "name": "Free Mobile"
+        },
+        {
+            "name": "Orange"
+        },
+        {
+            "name": "Carrefour"
+        }
+    ],
+    "transactions": [
+        {
+            "date_transaction": "2025-05-25",
+            "payee_id": 1,
+            "sub_category_id": 1,
+            "memo": "Abonnement mobile",
+            "outflow": 9.90,
+            "inflow": 0,
+            "committed": 1,
+            "account_id": 1
+        },
+        {
+            "date_transaction": "2025-05-25",
+            "payee_id": 2,
+            "sub_category_id": 2,
+            "memo": "Abonnement internet",
+            "outflow": 35.99, 
+            "inflow": 0,
+            "committed": 1,
+            "account_id": 1
+        },
+        {
+            "date_transaction": "2025-05-25",
+            "payee_id": 3,
+            "sub_category_id": 3,
+            "memo": "Courses",
+            "outflow": 35.57,
+            "inflow": 0,
+            "committed": 1,
+            "account_id": 2
+        }
+    ],
+    "scheduled_transactions": [
+        {
+            "date_transaction": "2025-05-25",
+            "payee_id": 1,
+            "sub_category_id": 1,
+            "memo": "Abonnement mobile",
+            "outflow": 9.90,
+            "inflow": 0,
+            "frequency": "Monthly",
+            "account_id": 1
+        },
+        {
+            "date_transaction": "2025-05-25",
+            "payee_id": 2,
+            "sub_category_id": 2,
+            "memo": "Abonnement internet",
+            "outflow": 35.99, 
+            "inflow": 0,
+            "frequency": "Monthly",
+            "account_id": 1
+        }
+    ]
+}
+
