@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 from nicegui import ui, app
 from database import Base, engine
 from views.auth_view import show_login, logout
+from views.page_layout import main_layout
+
 
 load_dotenv()
 
@@ -15,25 +17,13 @@ ui.add_head_html('<link rel="stylesheet" href="/static/css/style.css">')
 
 
 @ui.page('/')
-def home():
-    if 'user_id' in app.storage.user:
-        ui.navigate.to('/dashboard')
-    else:
-        show_login()
+def start():
+    ui.navigate.to('/app')  # Redirection vers notre layout
 
 
-@ui.page('/dashboard')
-def dashboard():
-    from views.user_view import user_aggrid_table  # Import local pour éviter les cycles
-
-    if 'user_id' not in app.storage.user:
-        ui.notify('Accès refusé, veuillez vous connecter')
-        ui.navigate.to('/')
-        return
-
-    ui.label('Dashboard sécurisé').classes('text-h5 q-my-md')
-    user_aggrid_table()  # Appel à ta nouvelle table
-    ui.button('Se déconnecter', on_click=logout).classes('q-mt-md')
+@ui.page('/app')
+def app_page():
+    main_layout()  # Lance ton layout SPA ici
 
 
 # Démarrer l'application
