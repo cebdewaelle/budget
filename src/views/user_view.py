@@ -5,7 +5,6 @@ from models.user import User
 
 def show_dashboard():
 
-    dark = ui.dark_mode(value=True)
     session = SessionLocal()
     users = session.query(User).all()
     session.close()

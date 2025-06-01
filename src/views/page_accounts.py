@@ -4,7 +4,6 @@ from datetime import date
 
 
 def show_accounts():
-    dark = ui.dark_mode(value=True)
 
     try:
         accounts = ctrl.get_all_accounts()
