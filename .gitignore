@@ -9,6 +9,9 @@ __pycache__/
 # SQLite
 budget.db
 
+# Nicegui
+.nicegui/
+
 # Distribution / packaging
 .Python
 build/

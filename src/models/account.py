@@ -1,10 +1,13 @@
-class Account:
+from sqlalchemy import Column, Integer, String, Float, Date, Boolean, ForeignKey
+from database import Base
 
-    def __init__(self, id: int, name: str, balance: float, date_balance: str, type_account: str, in_budget: int, user_id: int) -> None:
-        self.id = id
-        self.name = name
-        self.balance = balance
-        self.date_balance = date_balance
-        self.type_account = type_account
-        self.in_budget = in_budget
-        self.user_id = user_id
+class Account(Base):
+    __tablename__ = 'accounts'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    balance = Column(Float)
+    date_balance = Column(Date)
+    type_account = Column(String)
+    in_budget = Column(Boolean)
+    user_id = Column(Integer, ForeignKey('users.id'))

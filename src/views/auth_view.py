@@ -3,7 +3,9 @@ from sqlalchemy.orm import Session
 from database import SessionLocal
 from models.user import User
 from utils.security import verify_password
+from utils.auth import public_route
 
+@public_route
 def show_login():
     ui.label('Connexion').classes('text-h4 q-my-md')
 
@@ -24,7 +26,7 @@ def show_login():
     ui.button('Se connecter', on_click=login_action).classes('q-mt-md')
 
 
-def logout():
+def show_logout():
     app.storage.user.clear()  # Supprime les données de session
 
     # Supprime le cookie côté client avec JavaScript
