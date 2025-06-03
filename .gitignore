@@ -8,6 +8,7 @@ __pycache__/
 
 # SQLite
 budget.db
+budget.sqlite3
 
 # Nicegui
 .nicegui/
@@ -178,3 +179,4 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+.vscode/settings.json
