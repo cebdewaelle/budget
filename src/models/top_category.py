@@ -1,6 +1,9 @@
-from src.models.category import Category
+from sqlalchemy import Column, Integer, String
+from database import Base
 
-class TopCategory (Category):
 
-    def __init__(self, id: int, name: str) -> None:
-        super().__init__(id, name)
+class SubCategory(Base):
+    __tablename__ = 'topcategories'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)

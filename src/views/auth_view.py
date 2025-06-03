@@ -16,9 +16,10 @@ def show_login():
         session: Session = SessionLocal()
         user = session.query(User).filter_by(email=email.value).first()
         if user and verify_password(user.password, password.value):
-            app.storage.user['user_id'] = user.id  # Stockage de session
+            # Enregistrement de l'id user dans la session
+            app.storage.user['user_id'] = user.id
             ui.notify(f'Bienvenue, {user.firstname} {user.lastname} !')
-            ui.navigate.to('/dashboard')  # Redirection vers une page protégée
+            ui.navigate.to('/accounts')
         else:
             ui.notify('Identifiants incorrects', color='negative')
         session.close()
@@ -27,7 +28,8 @@ def show_login():
 
 
 def show_logout():
-    app.storage.user.clear()  # Supprime les données de session
+    # Supprime les données de session
+    app.storage.user.clear()
 
     # Supprime le cookie côté client avec JavaScript
     ui.run_javascript("document.cookie = 'nicegui_user=; Max-Age=0; path=/'")

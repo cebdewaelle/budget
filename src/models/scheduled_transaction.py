@@ -1,7 +1,22 @@
-from src.models.generic_transaction import GenericTransaction
+from sqlalchemy import CheckConstraint, Column, Integer, String, Float, Date, ForeignKey
+from database import Base
 
-class ScheduledTransaction(GenericTransaction) :
+FREQUENCIES = ('Unique', 'Quotidien', 'Bihebdomadaire', 'Hebdomadaire', 'Bimensuel ', 'Quadrihebdomadaire',
+               'Mensuel', 'Bimestriel', 'Trimestriel', 'Quadrimestriel', 'Semestriel', 'Annuel', 'Bisannuel')
 
-    def __init__(self, id: int, date_transaction: str, payee_id: int, sub_category: int, memo: str, outflow: float, inflow: float, account_id: int, frequency: str) -> None:
-        super().__init__(id, date_transaction, payee_id, sub_category, memo, outflow, inflow, account_id)
-        self.frequency = frequency
+class Transaction (Base):
+    __tablename__ = 'transactions'
+
+    id = Column(Integer, primary_key=True)
+    date_transaction = Column(Date)
+    payee_id = Column(Integer, ForeignKey('payees.id'))
+    sub_category = Column(Integer, ForeignKey('subcategories.id'))
+    memo = Column(String)
+    outflow = Column(Float)
+    inflow = Column(Float)
+    account_id = Column(Integer, ForeignKey('accounts.id'))
+    frequency = Column(String, nullable=False)
+
+    __table_args__ = (
+        CheckConstraint(f"frequency IN {FREQUENCIES}", name="check_frequency"),
+    )

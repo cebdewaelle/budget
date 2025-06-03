@@ -1,12 +1,12 @@
 from nicegui import ui
-from controllers import accounts_controller as ctrl
+from controllers import accounts_controller as actr
 from datetime import date
 
 
 def show_accounts():
 
     try:
-        accounts = ctrl.get_all_accounts()
+        accounts = actr.get_all_accounts_by_user()
     except Exception as e:
         ui.notify(f'Erreur : {str(e)}', color='negative')
         return
@@ -22,13 +22,13 @@ def show_accounts():
 
 
     def refresh():
-        aggrid.options['rowData'] = ctrl.get_all_accounts()
+        aggrid.options['rowData'] = actr.get_all_accounts_by_user()
         aggrid.update()
 
 
     def add_account():
         try:
-            new = ctrl.create_account({
+            new = actr.create_account({
                 'name': 'Nouveau compte',
                 'balance': 0.0,
                 'date_balance': date.today(),
@@ -44,7 +44,7 @@ def show_accounts():
     async def on_edit(e):
         data = e.args['data']
         try:
-            ctrl.update_account(data['id'], data)
+            actr.update_account(data['id'], data)
             ui.notify('Compte mis à jour')
         except Exception as err:
             ui.notify(f'Erreur: {err}', color='negative')
@@ -54,7 +54,7 @@ def show_accounts():
         selected = await aggrid.get_selected_rows()
         for row in selected:
             try:
-                ctrl.delete_account(row['id'])
+                actr.delete_account(row['id'])
             except Exception as err:
                 ui.notify(f'Erreur: {err}', color='negative')
         refresh()

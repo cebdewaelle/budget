@@ -14,7 +14,7 @@ def get_user_id() -> int:
     return user_id
 
 
-def get_all_accounts() -> list[dict]:
+def get_all_accounts_by_user() -> list[dict]:
     """Récupère tous les comptes de l'utilisateur connecté."""
     user_id = get_user_id()
     db: Session = SessionLocal()
@@ -39,12 +39,12 @@ def create_account(data: dict) -> dict:
     user_id = get_user_id()
     db: Session = SessionLocal()
     account = Account(
-        name=data.get('name', ''),
-        balance=data.get('balance', 0.0),
-        date_balance=date.today(),
-        type_account=data.get('type_account', ''),
-        in_budget=data.get('in_budget', True),
-        user_id=user_id,
+        name = data.get('name', ''),
+        balance = data.get('balance', 0.0),
+        date_balance = date.today(),
+        type_account = data.get('type_account', ''),
+        in_budget = data.get('in_budget', True),
+        user_id = user_id,
     )
     db.add(account)
     db.commit()
@@ -63,7 +63,7 @@ def update_account(account_id: int, data: dict) -> dict:
     account.name = data.get('name', account.name)
     account.balance = data.get('balance', account.balance)
 
-    # ✅ Conversion sécurisée de la date
+    # Conversion sécurisée de la date
     raw_date = data.get('date_balance', account.date_balance)
     if isinstance(raw_date, str):
         try:

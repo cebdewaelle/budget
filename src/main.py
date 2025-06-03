@@ -7,7 +7,7 @@ from views.auth_view import show_login, show_logout
 from views.page_budget import show_budget
 from views.page_reports import show_reports
 from views.page_accounts import show_accounts
-from views.user_view import show_dashboard
+from views.users_view import show_users
 from router import Router
 
 load_dotenv()
@@ -23,7 +23,7 @@ ui.add_head_html('<link rel="stylesheet" href="/static/css/style.css">')
 router = Router()
 
 # Définir ici les pages protégées (qui nécessitent une connexion)
-protected_routes = ['/dashboard', '/budget', '/reports', '/accounts']
+protected_routes = ['/users', '/budget', '/reports', '/accounts']
 
 @router.add('/')
 def main_route():
@@ -44,10 +44,10 @@ def reports_route():
 def accounts_route():
     show_accounts()
 
-@router.add('/dashboard')
+@router.add('/users')
 @protected_route
-def dashboard_route():
-    show_dashboard()
+def users_route():
+    show_users()
 
 @router.add('/login')
 def login_route():
@@ -79,7 +79,7 @@ def show_main():
             ui.button('Budget', on_click=lambda: router.open('/budget')).classes('w-64')
             ui.button('Reports', on_click=lambda: router.open('/reports')).classes('w-64')
             ui.button('Accounts', on_click=lambda: router.open('/accounts')).classes('w-64')
-            ui.button('Dashboard', on_click=lambda: router.open('/dashboard')).classes('w-64')
+            ui.button('Utilisateurs', on_click=lambda: router.open('/users')).classes('w-64')
 
     # Frame de contenu dynamique (pages)
     with ui.column().classes('w-full'):

@@ -16,7 +16,7 @@ def public_route(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         if 'user_id' in app.storage.user:
-            ui.navigate.to('/dashboard')  # Redirige les utilisateurs déjà connectés
+            ui.navigate.to('/accounts')  # Redirige les utilisateurs déjà connectés
             return
         return func(*args, **kwargs)
     return wrapper

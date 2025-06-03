@@ -3,7 +3,7 @@ from database import SessionLocal
 from models.user import User
 
 
-def show_dashboard():
+def show_users():
 
     session = SessionLocal()
     users = session.query(User).all()
