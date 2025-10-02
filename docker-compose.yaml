@@ -1,7 +1,7 @@
 version: "3.9"
 
 x-airflow-common: &airflow-common
-  build: .
+  build: ./airflow
   environment:
     - AIRFLOW__CORE__EXECUTOR=${AIRFLOW__CORE__EXECUTOR}
     - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=${AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}
