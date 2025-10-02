@@ -1,0 +1,22 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "Airflow DB",
+            "Group": "Servers",
+            "Host": "postgres_airflow",
+            "Port": 5432,
+            "Username": "airflow_user",
+            "SSLMode": "prefer",
+            "MaintenanceDB": "airflow_db"
+        },
+        "2": {
+            "Name": "Budget DB",
+            "Group": "Servers",
+            "Host": "postgres_budget",
+            "Port": 5432,
+            "Username": "budget_user",
+            "SSLMode": "prefer",
+            "MaintenanceDB": "budget_db"
+        }
+    }
+}
