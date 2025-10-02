@@ -1,0 +1,120 @@
+version: "3.9"
+
+x-airflow-common: &airflow-common
+  build: .
+  environment:
+    - AIRFLOW__CORE__EXECUTOR=${AIRFLOW__CORE__EXECUTOR}
+    - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=${AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}
+    - AIRFLOW__CORE__FERNET_KEY=${AIRFLOW__CORE__FERNET_KEY}
+    - AIRFLOW__WEBSERVER__SECRET_KEY=${AIRFLOW__WEBSERVER__SECRET_KEY}
+  volumes:
+    - ./dags:/opt/airflow/dags
+    - ./logs:/opt/airflow/logs
+    - ./data:/opt/airflow/data
+
+services:
+  # -----------------------
+  # Postgres pour Airflow
+  # -----------------------
+  postgres_airflow:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER_AIRFLOW}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_AIRFLOW}
+      POSTGRES_DB: ${POSTGRES_DB_AIRFLOW}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_airflow_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER_AIRFLOW} -d ${POSTGRES_DB_AIRFLOW}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # -----------------------
+  # Postgres pour Budget
+  # -----------------------
+  postgres_budget:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER_BUDGET}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_BUDGET}
+      POSTGRES_DB: ${POSTGRES_DB_BUDGET}
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_budget_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER_BUDGET} -d ${POSTGRES_DB_BUDGET}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # -----------------------
+  # pgAdmin
+  # -----------------------
+  pgadmin_dev:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - "8085:80"
+    depends_on:
+      - postgres_airflow
+      - postgres_budget
+    volumes:
+      - ./config_pgadmin_dev.json:/pgadmin4/servers.json
+
+  # -----------------------
+  # Airflow
+  # -----------------------
+  airflow-webserver:
+    <<: *airflow-common
+    command: webserver
+    ports:
+      - "8082:8080"
+    depends_on:
+      postgres_airflow:
+        condition: service_healthy
+
+  airflow-scheduler:
+    <<: *airflow-common
+    command: scheduler
+    depends_on:
+      postgres_airflow:
+        condition: service_healthy
+
+  # -----------------------
+  # FastAPI
+  # -----------------------
+  fastapi:
+    build: ./fastapi
+    container_name: fastapi
+    depends_on:
+      - postgres_budget
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER_BUDGET}:${POSTGRES_PASSWORD_BUDGET}@postgres_budget:5432/${POSTGRES_DB_BUDGET}
+
+  # -----------------------
+  # NiceGUI
+  # -----------------------
+  nicegui:
+    build: ./nicegui
+    container_name: nicegui
+    depends_on:
+      - fastapi
+    ports:
+      - "8084:8080"
+    environment:
+      - API_URL=http://fastapi:8000
+
+volumes:
+  postgres_airflow_data:
+  postgres_budget_data:
